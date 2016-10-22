@@ -5,7 +5,7 @@
 
 Name:             %{?scl_prefix}jansi
 Version:          1.9
-Release:          11%{?dist}
+Release:          10%{?dist}
 Summary:          Jansi is a java library for generating and interpreting ANSI escape sequences
 License:          ASL 2.0
 URL:              http://jansi.fusesource.org/
@@ -16,12 +16,14 @@ Source0:          jansi-%{version}.tar.xz
 
 BuildArch:        noarch
 
-BuildRequires:    maven30-maven-local
-BuildRequires:    maven30-maven-release-plugin
-BuildRequires:    maven30-maven-plugin-bundle
-BuildRequires:    maven30-fusesource-pom
+BuildRequires:    jpackage-utils
+BuildRequires:    java-devel
+BuildRequires:    maven-local
+BuildRequires:    maven-release-plugin
 # 1.4-9 jansi-native has classifier fixes
 BuildRequires:    %{?scl_prefix}jansi-native >= 1.4-9
+BuildRequires:    maven-plugin-bundle
+BuildRequires:    fusesource-pom
 
 
 %description
@@ -37,7 +39,7 @@ Summary:          Javadocs for %{name}
 This package contains the API documentation for %{name}.
 
 %prep
-%{?scl:scl enable maven30 %{scl} - << "EOF"}
+%{?scl:scl enable %{scl} - << "EOF"}
 %setup -q -n %{pkg_name}-%{version}
 
 %pom_disable_module jansi-website
@@ -56,12 +58,12 @@ This package contains the API documentation for %{name}.
 %{?scl:EOF}
 
 %build
-%{?scl:scl enable maven30 %{scl} - << "EOF"}
+%{?scl:scl enable %{scl} - << "EOF"}
 %mvn_build
 %{?scl:EOF}
 
 %install
-%{?scl:scl enable maven30 %{scl} - << "EOF"}
+%{?scl:scl enable %{scl} - << "EOF"}
 %mvn_install
 %{?scl:EOF}
 
@@ -72,9 +74,6 @@ This package contains the API documentation for %{name}.
 %doc license.txt
 
 %changelog
-* Wed Jun 18 2014 Severin Gehwolf <sgehwolf@redhat.com>  - 1.9-11
-- Build using maven30 collection.
-
 * Mon Jan 20 2014 Severin Gehwolf <sgehwolf@redhat.com>  - 1.9-10
 - Rebuild in order to fix osgi()-style provides.
 - Resolves: RHBZ#1054813
